@@ -1,0 +1,23 @@
+services:
+  openclaw:
+    image: openclaw/gateway:latest  # 2026年主流的稳定版本
+    container_name: openclaw-agent
+    restart: always
+    ports:
+      - "3000:3000"  # 本地控制台端口
+    environment:
+      - NODE_ENV=production
+      - OPENAI_API_KEY=your_api_key_here  # 替换成你的 API Key
+      - OPENAI_API_BASE=https://api.openai.com/v1 # 如果用中转或DeepSeek请修改此处
+      - TELEGRAM_BOT_TOKEN=your_bot_token # 建议配置，用于手机远程遥控
+      - WORKSPACE_DIR=/app/workspace
+    volumes:
+      - ./config:/app/config       # 存放插件和个人配置文件
+      - ./workspace:/app/workspace # 这是 AI 自动写代码的地方，会同步到你电脑
+      - ./logs:/app/logs           # 运行日志
+    networks:
+      - openclaw-net
+
+networks:
+  openclaw-net:
+    driver: bridge

@@ -1,0 +1,56 @@
+# 提示：新版 Compose 已无需 version 字段
+x-common: &common
+  image: openclaw/openclaw:latest # 既然有梯子，直接用官方原版
+  restart: always
+  networks:
+    - lobster-net
+
+services:
+  # 1. 主程序 (Leader)
+  leader:
+    <<: *common
+    container_name: lobster-leader
+    ports: ["18789:18789"]
+    volumes:
+      - ./config/leader:/root/.openclaw         # 独立配置存放处
+      - ./shared_workspace:/root/workspace      # 共享项目文件
+
+  # 2. 程序员 (Coder)
+  coder:
+    <<: *common
+    container_name: lobster-coder
+    ports: ["18790:18789"]
+    volumes:
+      - ./config/coder:/root/.openclaw
+      - ./shared_workspace:/root/workspace
+
+  # 3. 策划 (Designer)
+  designer:
+    <<: *common
+    container_name: lobster-designer
+    ports: ["18791:18789"]
+    volumes:
+      - ./config/designer:/root/.openclaw
+      - ./shared_workspace:/root/workspace
+
+  # 4. 美术 (Artist)
+  artist:
+    <<: *common
+    container_name: lobster-artist
+    ports: ["18792:18789"]
+    volumes:
+      - ./config/artist:/root/.openclaw
+      - ./shared_workspace:/root/workspace
+
+  # 5. 测试 (QA)
+  qa:
+    <<: *common
+    container_name: lobster-qa
+    ports: ["18793:18789"]
+    volumes:
+      - ./config/qa:/root/.openclaw
+      - ./shared_workspace:/root/workspace
+
+networks:
+  lobster-net:
+    driver: bridge

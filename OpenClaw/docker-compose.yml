@@ -1,0 +1,26 @@
+services:
+  openclaw-gateway:
+    image: ghcr.io/openclaw/openclaw:latest
+    container_name: openclaw-gateway
+    restart: unless-stopped
+    ports:
+      - "18789:18789" # 控制台端口
+    environment:
+      - TZ=Asia/Shanghai
+      - NODE_ENV=production
+    volumes:
+      # 持久化配置、插件和记忆数据
+      - ./.openclaw:/home/node/.openclaw
+      # 给 Agent 提供操作代码的 workspace
+      - ./workspace:/home/node/.openclaw/workspace
+    # 如果要调用 Mac 宿主机上的 Ollama/vLLM，需要添加 extra_hosts
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # 辅助容器：用于执行 CLI 管理任务
+  openclaw-cli:
+    image: ghcr.io/openclaw/openclaw:latest
+    container_name: openclaw-cli
+    volumes:
+      - ./.openclaw:/home/node/.openclaw
+    profiles: ["tools"] # 默认不后台运行
