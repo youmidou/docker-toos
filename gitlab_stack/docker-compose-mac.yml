@@ -3,7 +3,6 @@ services:
   gitlab:
     image: imachineml/gitlab-ce:latest  # 使用官方 GitLab CE 镜像
     platform: linux/amd64  # 明确指定镜像架构为 x86_64
-    container_name: gitlab-code
     restart: always
     hostname: 'localhost'  # 使用本地主机
     environment:
@@ -11,9 +10,9 @@ services:
         external_url 'http://localhost'  # 设置 GitLab 的本机访问地址
         gitlab_rails['initial_root_password'] = 'y6040145'  # 初始 root 密码
     ports:
-      - "80:80"     # HTTP 端口
-      - "443:443"   # HTTPS 端口
-      - "22:22"     # SSH 端口
+      - "880:80"     # HTTP 端口
+      - "8443:443"   # HTTPS 端口
+      - "822:22"     # SSH 端口
     volumes:
       - /Users/yh/h/gitlab/config:/etc/gitlab   # 配置文件持久化
       - /Users/yh/h/gitlab/logs:/var/log/gitlab # 日志文件持久化
