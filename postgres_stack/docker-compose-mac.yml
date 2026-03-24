@@ -1,0 +1,42 @@
+# Docker Compose 文件版本（3.8 是最稳定通用版，适配所有系统）
+version: '3.8'
+
+# 服务配置（定义要运行的容器）
+services:
+  # PostgreSQL 数据库服务（自定义名称，可随意改）
+  postgres:
+    # 镜像版本：固定 PostgreSQL 18（修复报错的核心版本，不升级不降级）
+    image: postgres:18
+    # 容器名称（方便管理，固定不变）
+    container_name: postgres_db
+    # 重启策略：always = 电脑开机/容器崩溃时自动重启（生产环境必备）
+    restart: always
+    # 端口映射：宿主机端口:容器内部端口
+    # 左边 5432 = 你电脑/外部连接用的端口（可修改，比如 5433）
+    # 右边 5432 = PostgreSQL 默认端口（固定不能改）
+    ports:
+      - "5432:5432"
+    # 核心环境变量（数据库初始化配置，无需重装自动生效）
+    environment:
+      # 数据库超级管理员密码（你原来的密码，保留不变）
+      POSTGRES_PASSWORD: 123456
+      # 数据库默认用户名（默认 postgres，固定即可）
+      POSTGRES_USER: postgres
+      # 初始化自动创建的数据库名（你原来的库名，保留不变）
+      POSTGRES_DB: game_db
+      # 时区设置：亚洲/上海（解决时间错乱问题）
+      TZ: Asia/Shanghai
+    # 🔥 核心修复：PostgreSQL 18+ 必须挂载上层目录（数据完全保留，不丢失）
+    # 旧写法（报错）：./postgres/data:/var/lib/postgresql/data
+    # 新写法（兼容+安全）：本地 postgres 文件夹 → 容器 /var/lib/postgresql
+    volumes:
+      - ./postgres:/var/lib/postgresql
+    # 独立网络（隔离容器，避免端口冲突）
+    networks:
+      - postgres_net
+
+# 自定义网络配置（保证数据库稳定运行）
+networks:
+  postgres_net:
+    # 网络模式：bridge = 本地隔离网络（默认最佳配置）
+    driver: bridge
