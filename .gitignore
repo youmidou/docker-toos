@@ -1,3 +1,4 @@
 .idea/*
 logs/
 postgres_stack/postgres
+mysql_stack/mysql
