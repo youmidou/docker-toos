@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       # 设置 root 密码
-      MYSQL_ROOT_PASSWORD: your_strong_password
+      MYSQL_ROOT_PASSWORD: 12345678
       # 创建初始数据库（可选）
       MYSQL_DATABASE: my_database
       # 设置时区
