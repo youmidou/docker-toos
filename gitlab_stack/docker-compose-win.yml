@@ -1,4 +1,3 @@
-version: '3'
 services:
   gitlab:
     image: imachineml/gitlab-ce:latest  # 使用官方 GitLab CE 镜像

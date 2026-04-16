@@ -1,0 +1,21 @@
+version: '3'
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest  # 官方原版镜像（国际版）
+    platform: linux/amd64  # 明确指定镜像架构为 x86_64
+    container_name: gitlab-code
+    restart: always
+    hostname: localhost
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://localhost:180'    # 必须带上你映射的端口！已修正为 180
+        gitlab_rails['gitlab_shell_ssh_port'] = 122
+        gitlab_rails['initial_root_password'] = 'y6040145'
+    ports:
+      - "180:80"
+      - "1443:443"
+      - "122:22"
+    volumes:
+      - D:/gitlab2/config:/etc/gitlab
+      - D:/gitlab2/logs:/var/log/gitlab
+      - D:/gitlab2/data:/var/opt/gitlab
