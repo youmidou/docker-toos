@@ -1,0 +1,33 @@
+version: '3.8'
+#vpn server
+services:
+  ss-server:
+    image: teddysun/shadowsocks-libev
+    container_name: ss-server
+    restart: always
+    # 端口映射说明：
+    # 左边是宿主机（服务器）端口，右边是容器内端口
+    # 建议将 54321 改为一个 10000-60000 之间的随机数字，防止被扫描
+    ports:
+      - "54322:54321/tcp"
+      - "54322:54321/udp"
+    environment:
+      # 【关键配置】加密方式：推荐 aes-256-gcm，安全性高且 M3 芯片有硬件加速
+      - METHOD=aes-256-gcm
+      # 【关键配置】你的连接密码：建议 12 位以上字母数字组合
+      - PASSWORD=YourStrongPassword123
+      # 必须与 ports 右侧的端口一致
+      - SERVER_PORT=54322
+      # 超时断开时间（秒）
+      - TIMEOUT=300
+      # 使用 Google DNS，防止在国内服务器环境下出现 DNS 污染
+      - DNS_ADDRS=8.8.8.8,8.8.4.4
+
+# 使用说明：
+# 1. 在服务器创建目录：mkdir ss-test && cd ss-test
+# 2. 将此内容保存为 docker-compose.yml
+# 3. 运行命令：docker-compose up -d
+# 4. 检查防火墙：务必在云服务器后台（如阿里云/腾讯云安全组）放行 54321 端口的 TCP 和 UDP
+  #对于自建单台服务器，业界通用的“一键导入链接”格式如下。你只需把你的信息填进去：
+  #你的 SS 链接：
+  #ss://aes-256-gcm:YourStrongPassword123@你的服务器公网IP:54321#HK_Server
