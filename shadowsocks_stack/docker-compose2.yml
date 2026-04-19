@@ -9,15 +9,15 @@ services:
     # 左边是宿主机（服务器）端口，右边是容器内端口
     # 建议将 54321 改为一个 10000-60000 之间的随机数字，防止被扫描
     ports:
-      - "54322:54321/tcp"
-      - "54322:54321/udp"
+      - "9000:9000/tcp"
+      - "9000:9000/udp"
     environment:
       # 【关键配置】加密方式：推荐 aes-256-gcm，安全性高且 M3 芯片有硬件加速
       - METHOD=aes-256-gcm
       # 【关键配置】你的连接密码：建议 12 位以上字母数字组合
       - PASSWORD=YourStrongPassword123
       # 必须与 ports 右侧的端口一致
-      - SERVER_PORT=54322
+      - SERVER_PORT=9000
       # 超时断开时间（秒）
       - TIMEOUT=300
       # 使用 Google DNS，防止在国内服务器环境下出现 DNS 污染

@@ -1,5 +1,8 @@
 version: '3.8'
 #vpn server
+#你的 SS 链接：
+#ss://aes-256-gcm:YourStrongPassword123@119.28.195.215:54321#HK_Server2
+#ss://aes-256-gcm:YourStrongPassword123@119.28.195.215:54321#HK_Server
 services:
   ss-server:
     image: teddysun/shadowsocks-libev
