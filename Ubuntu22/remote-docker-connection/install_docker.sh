@@ -8,7 +8,7 @@ echo "🔧 开始在 Ubuntu 22.04 上安装 Docker..."
 # 检查是否为 Ubuntu 22.04
 if [[ $(lsb_release -is) != "Ubuntu" ]] || [[ $(lsb_release -rs) != "22.04" ]]; then
   echo "❌ 本脚本仅支持 Ubuntu 22.04 LTS，当前为 $(lsb_release -ds)"
-  exit 1
+  #exit 1
 fi
 
 # 检查是否为 root 用户
