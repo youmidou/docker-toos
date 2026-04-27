@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest    #latest# 官方镜像（建议后期锁版本）
+    container_name: clickhouse-server            # 容器名称
+    restart: unless-stopped                      # 自动重启策略
+
+    ports:
+      - "8123:8123"   # HTTP接口（最常用，curl / web / BI工具）
+      - "9000:9000"   # TCP接口（客户端连接用，比如Go程序）
+      - "9009:9009"   # interserver通信（集群用，可选）
+
+    volumes:
+      # 数据目录（必须持久化，否则容器删了数据没了）
+      - ./data:/var/lib/clickhouse
+
+      # 日志目录（方便排查问题）
+      - ./logs:/var/log/clickhouse-server
+
+      # 自定义配置（可以不挂载，默认也能跑）
+      - ./config.xml:/etc/clickhouse-server/config.xml
+      - ./users.xml:/etc/clickhouse-server/users.xml
+
+    environment:
+      # 默认用户密码（生产必须改）
+      CLICKHOUSE_USER: default
+      CLICKHOUSE_PASSWORD: 123456
+
+      # 允许远程访问（重要）
+      CLICKHOUSE_DB: default
+
+    ulimits:
+      # ClickHouse 对文件句柄要求很高
+      nofile:
+        soft: 262144
+        hard: 262144
+
+    networks:
+      - clickhouse-net
+
+
+networks:
+  clickhouse-net:
+    driver: bridge
+
+#✅ 配套 config.xml（核心配置）

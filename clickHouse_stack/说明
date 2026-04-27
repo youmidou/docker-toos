@@ -1,0 +1,77 @@
+✅ 配套 config.xml（核心配置）
+
+👉 这个文件控制 性能 / 内存 / 并发 / 存储
+<yandex>
+    <!-- 日志级别 -->
+    <logger>
+        <level>information</level>
+        <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+        <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+    </logger>
+
+    <!-- HTTP端口 -->
+    <http_port>8123</http_port>
+
+    <!-- TCP端口 -->
+    <tcp_port>9000</tcp_port>
+
+    <!-- 最大连接数 -->
+    <max_connections>4096</max_connections>
+
+    <!-- 单查询最大内存 -->
+    <max_memory_usage>4000000000</max_memory_usage> <!-- 4GB -->
+
+    <!-- 总内存限制 -->
+    <max_server_memory_usage>8000000000</max_server_memory_usage>
+
+    <!-- 数据路径 -->
+    <path>/var/lib/clickhouse/</path>
+
+    <!-- 临时文件路径 -->
+    <tmp_path>/var/lib/clickhouse/tmp/</tmp_path>
+
+    <!-- 用户文件 -->
+    <users_config>users.xml</users_config>
+
+</yandex>
+
+✅ users.xml（权限 + 远程访问）
+<yandex>
+    <users>
+        <default>
+            <!-- 密码（生产必须改） -->
+            <password>123456</password>
+
+            <!-- 允许所有IP访问 -->
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+
+            <!-- 最大并发查询 -->
+            <max_concurrent_queries>100</max_concurrent_queries>
+
+            <!-- 最大执行时间 -->
+            <max_execution_time>60</max_execution_time>
+
+            <!-- 可访问数据库 -->
+            <profile>default</profile>
+            <quota>default</quota>
+        </default>
+    </users>
+
+    <profiles>
+        <default>
+            <!-- 单查询最大内存 -->
+            <max_memory_usage>4000000000</max_memory_usage>
+        </default>
+    </profiles>
+
+    <quotas>
+        <default>
+            <interval>
+                <duration>3600</duration>
+                <queries>0</queries>
+            </interval>
+        </default>
+    </quotas>
+</yandex>
