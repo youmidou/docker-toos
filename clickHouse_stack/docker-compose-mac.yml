@@ -11,12 +11,12 @@ services:
       - "9000:9000"   # TCP接口（客户端连接用，比如Go程序）
       - "9009:9009"   # interserver通信（集群用，可选）
 
-    volumes:
+    #volumes:
       # 数据目录（必须持久化，否则容器删了数据没了）
-      - ./data:/var/lib/clickhouse
+      #- ./data:/var/lib/clickhouse
 
       # 日志目录（方便排查问题）
-      - ./logs:/var/log/clickhouse-server
+      #- ./logs:/var/log/clickhouse-server
 
       # 自定义配置（已修复：本地是文件，挂载到容器文件）
       #- ./config.xml:/etc/clickhouse-server/config.xml
@@ -28,7 +28,7 @@ services:
       CLICKHOUSE_PASSWORD: 12345678
 
       # 允许远程访问（重要）
-      CLICKHOUSE_DB: default
+      CLICKHOUSE_DB: game_log
 
     ulimits:
       # ClickHouse 对文件句柄要求很高
