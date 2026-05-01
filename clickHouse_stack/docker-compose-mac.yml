@@ -18,14 +18,14 @@ services:
       # 日志目录（方便排查问题）
       - ./logs:/var/log/clickhouse-server
 
-      # 自定义配置（可以不挂载，默认也能跑）
-      - ./config.xml:/etc/clickhouse-server/config.xml
-      - ./users.xml:/etc/clickhouse-server/users.xml
+      # 自定义配置（已修复：本地是文件，挂载到容器文件）
+      #- ./config.xml:/etc/clickhouse-server/config.xml
+      #- ./users.xml:/etc/clickhouse-server/users.xml
 
     environment:
-      # 默认用户密码（生产必须改）
-      CLICKHOUSE_USER: default
-      CLICKHOUSE_PASSWORD: 123456
+      # 默认用户密码（生产必须改）default
+      CLICKHOUSE_USER: admin
+      CLICKHOUSE_PASSWORD: 12345678
 
       # 允许远程访问（重要）
       CLICKHOUSE_DB: default
